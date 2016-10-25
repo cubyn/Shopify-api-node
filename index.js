@@ -113,24 +113,4 @@ Shopify.prototype.request = function request(url, method, key, params) {
   });
 };
 
-//
-// Require and instantiate the resources lazily.
-//
-fs.readdirSync(path.join(__dirname, 'resources')).forEach(name => {
-  const prop = camelCase(name.slice(0, -3));
-
-  Object.defineProperty(Shopify.prototype, prop, {
-    get: function get() {
-      const resource = require(`./resources/${name}`);
-
-      return Object.defineProperty(this, prop, {
-        value: new resource(this)
-      })[prop];
-    },
-    set: function set(value) {
-      return Object.defineProperty(this, prop, { value })[prop];
-    }
-  });
-});
-
 module.exports = Shopify;
